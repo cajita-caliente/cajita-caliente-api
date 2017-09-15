@@ -12,11 +12,11 @@ const fileSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tags: {
+  tags: [{
     type: String,
     required: true
-  },
-  user: {
+  }],
+  _user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   }
