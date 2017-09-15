@@ -12,16 +12,23 @@ const multerUpload = multer({dest: '/tmp'})
 const awsUpload = require('lib/aws-upload')
 
 const create = (req, res, next) => {
+  console.log('got here 1')
+  // console.log(req)
   const fileUploaded = {
     path: req.file.path,
-    body: req.body.file.title
+    body: req.body.file.title,
+    user: req.body.user
   }
+
+  console.log('fileUploaded')
 
   awsUpload(fileUploaded)
   .then((s3Response) => {
     return File.create({
       url: s3Response.Location,
-      title: s3Response.Key
+      title: s3Response.Key,
+      tags: req.body.file.tags.split(''),
+      _user: req.body.user
     })
   })
   .then((fileUploaded) => res.status(201).json({fileUploaded}))
