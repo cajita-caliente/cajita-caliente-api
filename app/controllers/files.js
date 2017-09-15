@@ -32,9 +32,12 @@ const update = (req, res, next) => {
   req.file.update(req.body.file)
   .then(() => res.sendStatus(204))
   .catch(next)
+
+  // aws-s3 update goes here
 }
 
 const index = (req, res, next) => {
+  // Will be used automatically on sign-in
   File.find()
   .then(files => res.json({
     files: files.map((file) =>
@@ -44,8 +47,9 @@ const index = (req, res, next) => {
 }
 
 const show = (req, res, next) => {
+  // won't be used. App shows automatically
   res.json({
-    file: req.upload.toJSON({ virtuals: true })
+    file: req.file.toJSON({ virtuals: true })
   })
 }
 
@@ -53,6 +57,8 @@ const destroy = (req, res, next) => {
   req.file.remove()
   .then(() => res.sendStatus(204))
   .catch(next)
+
+  // aws-s3 delete goes here
 }
 
 module.exports = controller({
