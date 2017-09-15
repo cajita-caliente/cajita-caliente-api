@@ -26,7 +26,8 @@ const create = (req, res, next) => {
   .then((s3Response) => {
     return File.create({
       url: s3Response.Location,
-      title: s3Response.Key,
+      title: req.body.file.title,
+      // title: s3Response.Key,
       tags: req.body.file.tags.split(''),
       _user: req.body.user
     })
