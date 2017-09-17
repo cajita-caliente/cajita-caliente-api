@@ -11,6 +11,7 @@ const multerUpload = multer({dest: '/tmp'})
 
 const awsUpload = require('lib/aws-upload')
 const awsDelete = require('lib/aws-delete')
+const awsDownload = require('lib/aws-download')
 
 const create = (req, res, next) => {
   console.log('got here 1')
@@ -20,7 +21,7 @@ const create = (req, res, next) => {
     body: req.body.file.title,
     user: req.body.user
   }
-
+  console.log(fileUploaded.path)
   console.log('fileUploaded')
 
   awsUpload(fileUploaded)
@@ -28,6 +29,7 @@ const create = (req, res, next) => {
     return File.create({
       url: s3Response.Location,
       title: req.body.file.title,
+      fileType: req.file.mimetype,
       // title: s3Response.Key,
       tags: req.body.file.tags.split(' ').join(', '),
       _user: req.body.user
@@ -58,10 +60,18 @@ const index = (req, res, next) => {
 }
 
 const show = (req, res, next) => {
-  // won't be used. App shows automatically
-  res.json({
-    file: req.file.toJSON({ virtuals: true })
-  })
+  console.log(req.file)
+  const s3FileUrl = req.file.url
+  console.log(s3FileUrl)
+  awsDownload(s3FileUrl)
+    .then(() => {
+      res.json({
+        file: req.file.toJSON({virtuals: true})
+      })
+    })
+  // res.json({
+  //   file: req.file.toJSON({ virtuals: true })
+  // })
 }
 
 const destroy = (req, res, next) => {
