@@ -10,6 +10,7 @@ const multer = require('multer')
 const multerUpload = multer({dest: '/tmp'})
 
 const awsUpload = require('lib/aws-upload')
+const awsDelete = require('lib/aws-delete')
 
 const create = (req, res, next) => {
   console.log('got here 1')
@@ -28,7 +29,7 @@ const create = (req, res, next) => {
       url: s3Response.Location,
       title: req.body.file.title,
       // title: s3Response.Key,
-      tags: req.body.file.tags.split(''),
+      tags: req.body.file.tags.split(' ').join(', '),
       _user: req.body.user
     })
   })
@@ -37,7 +38,9 @@ const create = (req, res, next) => {
 }
 
 const update = (req, res, next) => {
-  req.file.update(req.body.file)
+  console.log(req.body)
+  console.log(req.file)
+  req.file.update(req.body.files)
   .then(() => res.sendStatus(204))
   .catch(next)
 
@@ -62,9 +65,15 @@ const show = (req, res, next) => {
 }
 
 const destroy = (req, res, next) => {
-  req.file.remove()
-  .then(() => res.sendStatus(204))
-  .catch(next)
+  console.log(req.file)
+  const s3FileUrl = req.file.url
+  console.log(s3FileUrl)
+  awsDelete(s3FileUrl)
+    .then(() => {
+      req.file.remove()
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
 
   // aws-s3 delete goes here
 }
