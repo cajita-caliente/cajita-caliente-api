@@ -26,7 +26,7 @@ Must bundle install.
 
 ## Planning
 # ERD
-- (https://imgur.com/MEy78Fm)
+- (https://i.imgur.com/H88iDzf.png)
 
 
 ## Links
