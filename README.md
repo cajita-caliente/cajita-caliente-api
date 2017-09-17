@@ -33,7 +33,7 @@ Must bundle install.
 
 - Back-end Repository: https://github.com/cajita-caliente/cajita-caliente-api
 - Front-end Repository: https://github.com/cajita-caliente/cajita-caliente-frontend
-- Back-end Deployed:
+- Back-end Deployed: https://powerful-river-39157.herokuapp.com
 - Front-end Deployed:
 
 
