@@ -38,7 +38,9 @@ const create = (req, res, next) => {
 }
 
 const update = (req, res, next) => {
-  req.file.update(req.body.file)
+  console.log(req.body)
+  console.log(req.file)
+  req.file.update(req.body.files)
   .then(() => res.sendStatus(204))
   .catch(next)
 
